@@ -12,11 +12,11 @@ import {
   allUpperCaseLetters,
 } from "@/constants/vars";
 
-import "@/pages/PasswordGeneratorPage/PasswordGeneratorPage.css";
+import "@/pages/PasscraftPage/PasscraftPage.css";
 
-const PasswordGeneratorPage = (): Page => {
+const PasscraftPage = (): Page => {
   const main = document.createElement("main") as Page;
-  main.className = "password-generator-page";
+  main.className = "passcraft-page";
 
   main.innerHTML = `
     <section class="card-wrapper" aria-label="Password generator">
@@ -124,4 +124,4 @@ const PasswordGeneratorPage = (): Page => {
   return main;
 };
 
-export default PasswordGeneratorPage;
+export default PasscraftPage;

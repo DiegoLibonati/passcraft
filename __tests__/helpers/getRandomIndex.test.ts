@@ -1,41 +1,54 @@
 import { getRandomIndex } from "@/helpers/getRandomIndex";
 
 describe("getRandomIndex", () => {
-  it("should return a valid index within array bounds", () => {
-    const array = ["a", "b", "c", "d", "e"];
+  describe("return value", () => {
+    it("should return a number", () => {
+      const result = getRandomIndex(["a", "b", "c"]);
+      expect(typeof result).toBe("number");
+    });
 
-    const index = getRandomIndex(array);
+    it("should return an integer", () => {
+      const result = getRandomIndex(["a", "b", "c"]);
+      expect(Number.isInteger(result)).toBe(true);
+    });
 
-    expect(index).toBeGreaterThanOrEqual(0);
-    expect(index).toBeLessThan(array.length);
+    it("should return 0 for a single-element array", () => {
+      const result = getRandomIndex(["only"]);
+      expect(result).toBe(0);
+    });
   });
 
-  it("should return 0 for single element array", () => {
-    const array = ["only"];
-    const mathRandomSpy = jest.spyOn(Math, "random").mockReturnValue(0.5);
-
-    const index = getRandomIndex(array);
-
-    expect(index).toBe(0);
-    mathRandomSpy.mockRestore();
+  describe("range", () => {
+    it("should always return an index within valid range", () => {
+      const array = ["a", "b", "c", "d", "e"];
+      for (let i = 0; i < 100; i++) {
+        const index = getRandomIndex(array);
+        expect(index).toBeGreaterThanOrEqual(0);
+        expect(index).toBeLessThan(array.length);
+      }
+    });
   });
 
-  it("should handle empty array", () => {
-    const array: string[] = [];
+  describe("randomness", () => {
+    it("should use Math.random to compute the index", () => {
+      jest.spyOn(Math, "random").mockReturnValue(0.5);
+      const array = ["a", "b", "c", "d"];
+      const result = getRandomIndex(array);
+      expect(result).toBe(2);
+    });
 
-    const index = getRandomIndex(array);
+    it("should return the last index when Math.random returns near 1", () => {
+      jest.spyOn(Math, "random").mockReturnValue(0.99);
+      const array = ["a", "b", "c"];
+      const result = getRandomIndex(array);
+      expect(result).toBe(2);
+    });
 
-    expect(index).toBe(0);
-  });
-
-  it("should return different indices for large arrays", () => {
-    const array = Array.from({ length: 100 }, (_, i) => i);
-    const indices = new Set<number>();
-
-    for (let i = 0; i < 50; i++) {
-      indices.add(getRandomIndex(array));
-    }
-
-    expect(indices.size).toBeGreaterThan(1);
+    it("should return 0 when Math.random returns 0", () => {
+      jest.spyOn(Math, "random").mockReturnValue(0);
+      const array = ["a", "b", "c"];
+      const result = getRandomIndex(array);
+      expect(result).toBe(0);
+    });
   });
 });

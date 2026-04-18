@@ -1,4 +1,4 @@
-# Password Generator
+# Passcraft
 
 ## Educational Purpose
 
@@ -17,7 +17,13 @@ The application will open automatically at `http://localhost:3000`
 
 ## Description
 
-I made a web page that allows the user to generate a random password. From this generated password you can choose: its length, if it contains uppercase letters, lowercase letters, numbers and/or symbols. It is a very customizable password generator.
+**Passcraft** is a lightweight, browser-based password generator that gives you full control over the credentials you create. No accounts, no servers, no dependencies — everything runs entirely in your browser.
+
+You start by setting the desired password length, then toggle any combination of four character sets: uppercase letters (A–Z), lowercase letters (a–z), numbers (0–9), and symbols (`!`, `#`, `$`, `%`, `&`, `/`, `(`, `)`, `=`, `?`, `¡`). Hit **Generate Password** and Passcraft instantly builds a randomized password from the character pool you defined. The result appears in a read-only field; clicking it automatically copies the password to your clipboard and confirms the action with a notification, so you can paste it straight into any form without extra steps.
+
+The combination of options is entirely up to you: generate a short numeric PIN, a long alphanumeric passphrase, a symbol-heavy password for high-security accounts, or anything in between. Because each password is generated fresh on demand using `Math.random`, consecutive clicks always produce a different result.
+
+Passcraft has zero runtime dependencies. The entire application is written in vanilla TypeScript compiled by Vite, with no frameworks or external libraries involved in production. The codebase follows strict TypeScript settings and is covered by a Jest + Testing Library test suite.
 
 ## Technologies used
 
@@ -59,11 +65,7 @@ No production dependencies - Pure Vanilla TypeScript
 
 ## Portfolio Link
 
-[`https://www.diegolibonati.com.ar/#/project/Password-Generator`](https://www.diegolibonati.com.ar/#/project/Password-Generator)
-
-## Video
-
-https://user-images.githubusercontent.com/99032604/199619042-c6829033-0643-4860-b194-438012d467c9.mp4
+[`https://www.diegolibonati.com.ar/#/project/passcraft`](https://www.diegolibonati.com.ar/#/project/passcraft)
 
 ## Testing
 

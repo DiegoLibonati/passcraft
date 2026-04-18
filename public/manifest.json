@@ -1,7 +1,7 @@
 {
-  "name": "Password Generator",
-  "short_name": "Password Generator",
-  "description": "I made a web page that allows the user to generate a random password. From this generated password you can choose: its length, if it contains uppercase letters, lowercase letters, numbers and/or symbols. It is a very customizable password generator.",
+  "name": "Passcraft",
+  "short_name": "Passcraft",
+  "description": "Passcraft is a lightweight, browser-based password generator that gives you full control over the credentials you create. No accounts, no servers, no dependencies — everything runs entirely in your browser.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

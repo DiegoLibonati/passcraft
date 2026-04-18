@@ -5,56 +5,88 @@ import type { OptionNumberComponent } from "@/types/components";
 
 import OptionNumber from "@/components/OptionNumber/OptionNumber";
 
-const renderComponent = (props: OptionNumberProps): OptionNumberComponent => {
-  const container = OptionNumber(props);
-  document.body.appendChild(container);
-  return container;
+const defaultProps: OptionNumberProps = {
+  id: "test-number",
+  label: "Test Number Label",
 };
 
-describe("OptionNumber Component", () => {
+const renderComponent = (
+  props: Partial<OptionNumberProps> = {}
+): OptionNumberComponent => {
+  const element = OptionNumber({ ...defaultProps, ...props });
+  document.body.appendChild(element);
+  return element;
+};
+
+describe("OptionNumber", () => {
   afterEach(() => {
     document.body.innerHTML = "";
   });
 
-  const defaultProps: OptionNumberProps = {
-    id: "test-number",
-    label: "Test Number",
-  };
+  describe("rendering", () => {
+    it("should render a div root element", () => {
+      const element = renderComponent();
+      expect(element.tagName).toBe("DIV");
+    });
 
-  it("should render number input with correct attributes", () => {
-    renderComponent(defaultProps);
+    it("should render a label with the correct text", () => {
+      renderComponent();
+      expect(screen.getByText("Test Number Label")).toBeInTheDocument();
+    });
 
-    const label = screen.getByText("Test Number");
-    const input = document.querySelector<HTMLInputElement>("#test-number");
+    it("should render a label linked to the input id", () => {
+      renderComponent();
+      expect(screen.getByText("Test Number Label")).toHaveAttribute(
+        "for",
+        "test-number"
+      );
+    });
 
-    expect(label).toBeInTheDocument();
-    expect(label).toHaveAttribute("for", "test-number");
-    expect(label).toHaveClass("option-number__label");
-    expect(input).toBeInTheDocument();
-    expect(input?.type).toBe("number");
+    it("should render a number input", () => {
+      renderComponent();
+      expect(screen.getByRole("spinbutton")).toBeInTheDocument();
+    });
+
+    it("should render the number input with the correct id", () => {
+      renderComponent();
+      expect(screen.getByRole("spinbutton")).toHaveAttribute(
+        "id",
+        "test-number"
+      );
+    });
   });
 
-  it("should apply additional className to container when provided", () => {
-    const propsWithClass: OptionNumberProps = {
-      ...defaultProps,
-      className: "custom-container",
-    };
+  describe("className", () => {
+    it("should apply base class with appended empty string when no className provided", () => {
+      const element = renderComponent();
+      expect(element.classList.contains("option-number")).toBe(true);
+    });
 
-    renderComponent(propsWithClass);
-
-    const container = document.querySelector<HTMLDivElement>(".option-number");
-    expect(container).toHaveClass("option-number", "custom-container");
+    it("should apply base class and custom className when provided", () => {
+      const element = renderComponent({ className: "custom-class" });
+      expect(element.classList.contains("option-number")).toBe(true);
+      expect(element.classList.contains("custom-class")).toBe(true);
+    });
   });
 
-  it("should apply classNameLabel to label when provided", () => {
-    const propsWithLabelClass: OptionNumberProps = {
-      ...defaultProps,
-      classNameLabel: "custom-label",
-    };
+  describe("classNameLabel", () => {
+    it("should apply classNameLabel to the label when provided", () => {
+      renderComponent({ classNameLabel: "custom-label" });
+      const label = screen.getByText("Test Number Label");
+      expect(label).toHaveClass("custom-label");
+    });
 
-    renderComponent(propsWithLabelClass);
+    it("should always apply base label class", () => {
+      renderComponent();
+      const label = screen.getByText("Test Number Label");
+      expect(label).toHaveClass("option-number__label");
+    });
 
-    const label = screen.getByText("Test Number");
-    expect(label).toHaveClass("option-number__label", "custom-label");
+    it("should apply both base and custom label class when classNameLabel is provided", () => {
+      renderComponent({ classNameLabel: "extra-label" });
+      const label = screen.getByText("Test Number Label");
+      expect(label).toHaveClass("option-number__label");
+      expect(label).toHaveClass("extra-label");
+    });
   });
 });

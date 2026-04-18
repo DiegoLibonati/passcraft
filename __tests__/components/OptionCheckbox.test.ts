@@ -5,55 +5,82 @@ import type { OptionCheckboxComponent } from "@/types/components";
 
 import OptionCheckbox from "@/components/OptionCheckbox/OptionCheckbox";
 
-const renderComponent = (
-  props: OptionCheckboxProps
-): OptionCheckboxComponent => {
-  const container = OptionCheckbox(props);
-  document.body.appendChild(container);
-  return container;
+const defaultProps: OptionCheckboxProps = {
+  id: "test-checkbox",
+  label: "Test Label",
 };
 
-describe("OptionCheckbox Component", () => {
+const renderComponent = (
+  props: Partial<OptionCheckboxProps> = {}
+): OptionCheckboxComponent => {
+  const element = OptionCheckbox({ ...defaultProps, ...props });
+  document.body.appendChild(element);
+  return element;
+};
+
+describe("OptionCheckbox", () => {
   afterEach(() => {
     document.body.innerHTML = "";
   });
 
-  const defaultProps: OptionCheckboxProps = {
-    id: "test-checkbox",
-    label: "Test Option",
-  };
+  describe("rendering", () => {
+    it("should render a div root element", () => {
+      const element = renderComponent();
+      expect(element.tagName).toBe("DIV");
+    });
 
-  it("should render checkbox with correct attributes", () => {
-    renderComponent(defaultProps);
+    it("should render a label with the correct text", () => {
+      renderComponent();
+      expect(screen.getByText("Test Label")).toBeInTheDocument();
+    });
 
-    const label = screen.getByText("Test Option");
-    const checkbox = document.querySelector<HTMLInputElement>("#test-checkbox");
+    it("should render a label linked to the input id", () => {
+      renderComponent();
+      expect(screen.getByText("Test Label")).toHaveAttribute(
+        "for",
+        "test-checkbox"
+      );
+    });
 
-    expect(label).toBeInTheDocument();
-    expect(label).toHaveAttribute("for", "test-checkbox");
-    expect(checkbox).toBeInTheDocument();
-    expect(checkbox?.type).toBe("checkbox");
-    expect(checkbox).toHaveAttribute("value", "off");
+    it("should render a checkbox input", () => {
+      renderComponent();
+      expect(screen.getByRole("checkbox")).toBeInTheDocument();
+    });
+
+    it("should render the checkbox with the correct id", () => {
+      renderComponent();
+      expect(screen.getByRole("checkbox")).toHaveAttribute(
+        "id",
+        "test-checkbox"
+      );
+    });
+
+    it("should render the checkbox with initial value 'off'", () => {
+      renderComponent();
+      expect(screen.getByRole("checkbox")).toHaveAttribute("value", "off");
+    });
+
+    it("should render the checkbox unchecked by default", () => {
+      renderComponent();
+      expect(screen.getByRole("checkbox")).not.toBeChecked();
+    });
   });
 
-  it("should apply additional className when provided", () => {
-    const propsWithClass: OptionCheckboxProps = {
-      ...defaultProps,
-      className: "custom-class",
-    };
+  describe("className", () => {
+    it("should apply only the base class when no className is provided", () => {
+      const element = renderComponent();
+      expect(element.className).toBe("option-checkbox");
+    });
 
-    renderComponent(propsWithClass);
+    it("should apply base class and custom className when provided", () => {
+      const element = renderComponent({ className: "custom-class" });
+      expect(element.classList.contains("option-checkbox")).toBe(true);
+      expect(element.classList.contains("custom-class")).toBe(true);
+    });
 
-    const container =
-      document.querySelector<HTMLDivElement>(".option-checkbox");
-    expect(container).toHaveClass("option-checkbox", "custom-class");
-  });
-
-  it("should not have extra className when not provided", () => {
-    renderComponent(defaultProps);
-
-    const container =
-      document.querySelector<HTMLDivElement>(".option-checkbox");
-    expect(container?.className.trim()).toBe("option-checkbox");
+    it("should trim trailing space when empty className is provided", () => {
+      const element = renderComponent({ className: "" });
+      expect(element.className).toBe("option-checkbox");
+    });
   });
 });
