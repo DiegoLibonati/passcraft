@@ -1,7 +1,7 @@
 {
   "name": "Passcraft",
   "short_name": "Passcraft",
-  "description": "Passcraft is a lightweight, browser-based password generator that gives you full control over the credentials you create. No accounts, no servers, no dependencies — everything runs entirely in your browser.",
+  "description": "Passcraft is a lightweight, browser-based password generator that gives you full control over the credentials you create.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
