@@ -1,6 +1,10 @@
 import { getRandomIndex } from "@/helpers/getRandomIndex";
 
 describe("getRandomIndex", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   describe("return value", () => {
     it("should return a number", () => {
       const result = getRandomIndex(["a", "b", "c"]);

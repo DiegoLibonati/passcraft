@@ -11,9 +11,6 @@ const renderPage = (): Page => {
   return element;
 };
 
-const getPasswordInput = (): HTMLInputElement =>
-  document.querySelector<HTMLInputElement>("#inputText")!;
-
 describe("PasscraftPage", () => {
   let mockAlert: jest.SpyInstance;
   let mockClipboardWriteText: jest.SpyInstance;
@@ -27,6 +24,7 @@ describe("PasscraftPage", () => {
 
   afterEach(() => {
     document.body.innerHTML = "";
+    jest.restoreAllMocks();
   });
 
   describe("rendering", () => {
@@ -94,7 +92,9 @@ describe("PasscraftPage", () => {
         await user.click(
           screen.getByRole("button", { name: /generate password/i })
         );
-        expect(getPasswordInput().value).toBe("Use any check.");
+        expect(
+          screen.getByRole("textbox", { name: /generated password/i })
+        ).toHaveValue("Use any check.");
       });
     });
 
@@ -108,8 +108,11 @@ describe("PasscraftPage", () => {
         await user.click(
           screen.getByRole("button", { name: /generate password/i })
         );
-        expect(getPasswordInput().value).toMatch(/^[A-Z]+$/);
-        expect(getPasswordInput().value).toHaveLength(10);
+        const passwordInput = screen.getByRole<HTMLInputElement>("textbox", {
+          name: /generated password/i,
+        });
+        expect(passwordInput.value).toMatch(/^[A-Z]+$/);
+        expect(passwordInput.value).toHaveLength(10);
       });
     });
 
@@ -123,8 +126,11 @@ describe("PasscraftPage", () => {
         await user.click(
           screen.getByRole("button", { name: /generate password/i })
         );
-        expect(getPasswordInput().value).toMatch(/^[a-z]+$/);
-        expect(getPasswordInput().value).toHaveLength(8);
+        const passwordInput = screen.getByRole<HTMLInputElement>("textbox", {
+          name: /generated password/i,
+        });
+        expect(passwordInput.value).toMatch(/^[a-z]+$/);
+        expect(passwordInput.value).toHaveLength(8);
       });
     });
 
@@ -138,8 +144,11 @@ describe("PasscraftPage", () => {
         await user.click(
           screen.getByRole("button", { name: /generate password/i })
         );
-        expect(getPasswordInput().value).toMatch(/^[0-9]+$/);
-        expect(getPasswordInput().value).toHaveLength(6);
+        const passwordInput = screen.getByRole<HTMLInputElement>("textbox", {
+          name: /generated password/i,
+        });
+        expect(passwordInput.value).toMatch(/^[0-9]+$/);
+        expect(passwordInput.value).toHaveLength(6);
       });
     });
 
@@ -153,8 +162,11 @@ describe("PasscraftPage", () => {
         await user.click(
           screen.getByRole("button", { name: /generate password/i })
         );
-        expect(getPasswordInput().value).toHaveLength(5);
-        expect(getPasswordInput().value).toMatch(/^[!#$%&/()=?¡]+$/);
+        const passwordInput = screen.getByRole<HTMLInputElement>("textbox", {
+          name: /generated password/i,
+        });
+        expect(passwordInput.value).toHaveLength(5);
+        expect(passwordInput.value).toMatch(/^[!#$%&/()=?¡]+$/);
       });
     });
 
@@ -171,8 +183,11 @@ describe("PasscraftPage", () => {
         await user.click(
           screen.getByRole("button", { name: /generate password/i })
         );
-        expect(getPasswordInput().value).toHaveLength(20);
-        expect(getPasswordInput().value).not.toBe("Use any check.");
+        const passwordInput = screen.getByRole<HTMLInputElement>("textbox", {
+          name: /generated password/i,
+        });
+        expect(passwordInput.value).toHaveLength(20);
+        expect(passwordInput.value).not.toBe("Use any check.");
       });
     });
 
@@ -184,7 +199,9 @@ describe("PasscraftPage", () => {
         await user.click(
           screen.getByRole("button", { name: /generate password/i })
         );
-        expect(getPasswordInput().value).toBe("");
+        expect(
+          screen.getByRole("textbox", { name: /generated password/i })
+        ).toHaveValue("");
       });
     });
   });
@@ -199,7 +216,9 @@ describe("PasscraftPage", () => {
       await user.click(
         screen.getByRole("button", { name: /generate password/i })
       );
-      const passwordValue = getPasswordInput().value;
+      const passwordValue = screen.getByRole<HTMLInputElement>("textbox", {
+        name: /generated password/i,
+      }).value;
       await user.click(
         screen.getByRole("textbox", { name: /generated password/i })
       );
@@ -215,7 +234,9 @@ describe("PasscraftPage", () => {
       await user.click(
         screen.getByRole("button", { name: /generate password/i })
       );
-      const passwordValue = getPasswordInput().value;
+      const passwordValue = screen.getByRole<HTMLInputElement>("textbox", {
+        name: /generated password/i,
+      }).value;
       await user.click(
         screen.getByRole("textbox", { name: /generated password/i })
       );
@@ -241,7 +262,9 @@ describe("PasscraftPage", () => {
       await user.click(
         screen.getByRole("button", { name: /generate password/i })
       );
-      expect(getPasswordInput().value).toBe("");
+      expect(
+        screen.getByRole("textbox", { name: /generated password/i })
+      ).toHaveValue("");
     });
 
     it("should stop copying to clipboard after cleanup", async () => {

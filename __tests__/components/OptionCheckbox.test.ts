@@ -21,6 +21,7 @@ const renderComponent = (
 describe("OptionCheckbox", () => {
   afterEach(() => {
     document.body.innerHTML = "";
+    jest.clearAllMocks();
   });
 
   describe("rendering", () => {
@@ -74,8 +75,8 @@ describe("OptionCheckbox", () => {
 
     it("should apply base class and custom className when provided", () => {
       const element = renderComponent({ className: "custom-class" });
-      expect(element.classList.contains("option-checkbox")).toBe(true);
-      expect(element.classList.contains("custom-class")).toBe(true);
+      expect(element).toHaveClass("option-checkbox");
+      expect(element).toHaveClass("custom-class");
     });
 
     it("should trim trailing space when empty className is provided", () => {

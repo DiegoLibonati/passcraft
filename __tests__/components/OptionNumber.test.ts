@@ -21,6 +21,7 @@ const renderComponent = (
 describe("OptionNumber", () => {
   afterEach(() => {
     document.body.innerHTML = "";
+    jest.clearAllMocks();
   });
 
   describe("rendering", () => {
@@ -59,13 +60,13 @@ describe("OptionNumber", () => {
   describe("className", () => {
     it("should apply base class with appended empty string when no className provided", () => {
       const element = renderComponent();
-      expect(element.classList.contains("option-number")).toBe(true);
+      expect(element).toHaveClass("option-number");
     });
 
     it("should apply base class and custom className when provided", () => {
       const element = renderComponent({ className: "custom-class" });
-      expect(element.classList.contains("option-number")).toBe(true);
-      expect(element.classList.contains("custom-class")).toBe(true);
+      expect(element).toHaveClass("option-number");
+      expect(element).toHaveClass("custom-class");
     });
   });
 
