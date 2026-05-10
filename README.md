@@ -6,15 +6,6 @@ This project was created primarily for **educational and learning purposes**.
 While it is well-structured and could technically be used in production, it is **not intended for commercialization**.  
 The main goal is to explore and demonstrate best practices, patterns, and technologies in software development.
 
-## Getting Started
-
-1. Clone the repository
-2. Navigate to the project folder
-3. Execute: `npm install`
-4. Execute: `npm run dev`
-
-The application will open automatically at `http://localhost:3000`
-
 ## Description
 
 **Passcraft** is a lightweight, browser-based password generator that gives you full control over the credentials you create. No accounts, no servers, no dependencies — everything runs entirely in your browser.
@@ -33,6 +24,8 @@ Passcraft has zero runtime dependencies. The entire application is written in va
 4. Vite
 
 ## Libraries used
+
+The project ships with **zero production dependencies**. Everything listed below is tooling used during development, testing, and linting.
 
 #### Dependencies
 
@@ -64,11 +57,20 @@ No production dependencies - Pure Vanilla TypeScript
 "vite": "^7.1.6"
 ```
 
-## Portfolio Link
+## Getting Started
 
-[`https://www.diegolibonati.com.ar/#/project/passcraft`](https://www.diegolibonati.com.ar/#/project/passcraft)
+With the toolchain in place after `npm install`, follow these steps to run Passcraft locally:
+
+1. Clone the repository
+2. Navigate to the project folder
+3. Execute: `npm install`
+4. Execute: `npm run dev`
+
+The application will open automatically at `http://localhost:3000`.
 
 ## Testing
+
+Once the app runs locally, you can verify the codebase against the Jest + Testing Library suite that mirrors the `src/` layout.
 
 1. Navigate to the project folder
 2. Execute: `npm test`
@@ -79,7 +81,9 @@ For coverage report:
 npm run test:coverage
 ```
 
-## Security
+## Security Audit
+
+Beyond functional tests, you can audit the dev dependencies for known vulnerabilities.
 
 ### npm audit
 
@@ -92,3 +96,7 @@ npm audit
 ## Known Issues
 
 None at the moment.
+
+## Portfolio Link
+
+[`https://www.diegolibonati.com.ar/#/project/passcraft`](https://www.diegolibonati.com.ar/#/project/passcraft)
