@@ -61,10 +61,11 @@ No production dependencies - Pure Vanilla TypeScript
 
 With the toolchain in place after `npm install`, follow these steps to run Passcraft locally:
 
-1. Clone the repository
-2. Navigate to the project folder
-3. Execute: `npm install`
-4. Execute: `npm run dev`
+1. Ensure [Node.js 22](https://nodejs.org/) is installed (see `.nvmrc`)
+2. Clone the repository
+3. Navigate to the project folder
+4. Execute: `npm install`
+5. Execute: `npm run dev`
 
 The application will open automatically at `http://localhost:3000`.
 
@@ -92,6 +93,8 @@ Check for vulnerabilities in dependencies:
 ```bash
 npm audit
 ```
+
+[![CI](https://github.com/DiegoLibonati/Password-Generator/actions/workflows/ci.yml/badge.svg)](https://github.com/DiegoLibonati/Password-Generator/actions/workflows/ci.yml)
 
 ## Known Issues
 

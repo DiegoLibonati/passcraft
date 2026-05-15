@@ -204,6 +204,23 @@ describe("PasscraftPage", () => {
         ).toHaveValue("");
       });
     });
+
+    describe("when getRandomIndex returns an out-of-bounds index", () => {
+      it("should not append undefined characters to the password", async () => {
+        jest.spyOn(Math, "random").mockReturnValue(1.0);
+        const user = userEvent.setup();
+        renderPage();
+        await user.click(screen.getByLabelText("Contain Uppercase Letters"));
+        await user.clear(screen.getByLabelText("Password Length"));
+        await user.type(screen.getByLabelText("Password Length"), "5");
+        await user.click(
+          screen.getByRole("button", { name: /generate password/i })
+        );
+        expect(
+          screen.getByRole("textbox", { name: /generated password/i })
+        ).toHaveValue("");
+      });
+    });
   });
 
   describe("clipboard copy", () => {
