@@ -82,6 +82,62 @@ For coverage report:
 npm run test:coverage
 ```
 
+## Continuous Integration
+
+[![CI](https://github.com/DiegoLibonati/Password-Generator/actions/workflows/ci.yml/badge.svg)](https://github.com/DiegoLibonati/Password-Generator/actions/workflows/ci.yml)
+
+The repository ships with a **GitHub Actions** pipeline defined in [`.github/workflows/ci.yml`](.github/workflows/ci.yml). It runs automatically on every `push` and `pull_request` targeting the `main` branch and is composed of three sequential jobs that gate one another: if an earlier job fails, the next one is skipped.
+
+### Pipeline overview
+
+```
+                      ┌─── PR or push to main ───┐
+                      ▼                          ▼
+┌──────────────────────┐  ┌──────────────────┐  ┌──────────────────┐
+│    lint-and-audit    │─▶│     testing      │─▶│      build       │
+│  eslint · tsc --noE  │  │   jest (jsdom)   │  │  tsc + vite build│
+└──────────────────────┘  └──────────────────┘  └──────────────────┘
+```
+
+### Validation jobs (run on every PR and push to `main`)
+
+1. **`lint-and-audit`** — installs dependencies with `npm ci`, then runs `npm run lint` (ESLint with Prettier as a lint rule) and `npm run type-check` (TypeScript in `--noEmit` mode with `strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noImplicitReturns`, `noImplicitOverride`).
+2. **`testing`** — depends on `lint-and-audit`. Reinstalls dependencies and runs `npm test`, which executes the Jest + Testing Library suite in the `jest-environment-jsdom` environment. The suite mirrors the `src/` layout under `__tests__/`, mocks CSS imports via `__tests__/__mocks__/style.mock.ts`, and stubs `navigator.clipboard` in `__tests__/jest.setup.ts`. Coverage threshold is 70% across all metrics when invoked via `npm run test:coverage` locally.
+3. **`build`** — depends on `testing`. Reinstalls dependencies and runs `npm run build`, which performs a `tsc` type-check followed by `vite build`. This guarantees the codebase still produces a publishable bundle.
+
+All three jobs use `ubuntu-latest`, `actions/checkout@v4.2.2`, and `actions/setup-node@v4` with `node-version-file: .nvmrc` and `cache: npm` so the Node version is always pinned to `.nvmrc` and `node_modules` is cached between runs.
+
+### Skipping CI
+
+To push a change to `main` without triggering the pipeline (e.g. fixing a typo in the README), append GitHub's standard `[skip ci]` marker to the commit message:
+
+```bash
+git commit -m "docs: fix typo in README [skip ci]"
+```
+
+### Where the build outputs live
+
+| Output                                           | Location                                                   |
+| ------------------------------------------------ | ---------------------------------------------------------- |
+| Validation logs (lint, type-check, tests, build) | **Actions** tab on GitHub                                  |
+| Production bundle (`dist/`)                      | Ephemeral, inside the runner (not uploaded as an artifact) |
+
+> **Note:** the pipeline does not publish releases or attach build artifacts. It is purely a validation pipeline that guarantees `main` always lints, type-checks, tests, and builds cleanly.
+
+### Running the same checks locally
+
+```bash
+# lint-and-audit
+npm run lint
+npm run type-check
+
+# testing
+npm test
+
+# build
+npm run build
+```
+
 ## Security Audit
 
 Beyond functional tests, you can audit the dev dependencies for known vulnerabilities.
@@ -93,8 +149,6 @@ Check for vulnerabilities in dependencies:
 ```bash
 npm audit
 ```
-
-[![CI](https://github.com/DiegoLibonati/Password-Generator/actions/workflows/ci.yml/badge.svg)](https://github.com/DiegoLibonati/Password-Generator/actions/workflows/ci.yml)
 
 ## Known Issues
 
